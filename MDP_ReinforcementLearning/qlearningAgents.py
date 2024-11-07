@@ -97,7 +97,7 @@ class QLearningAgent(ReinforcementAgent):
         if util.flipCoin(self.epsilon):
             return random.choice(self.getLegalActions(state))
         else:
-            return self.getAction(state)
+            return self.computeActionFromQValues(state)
 
 
 
@@ -119,9 +119,9 @@ class QLearningAgent(ReinforcementAgent):
 
               ***sample = R(s,a,s') + gamma*max(Q(s',a'))***
         """
-        q_value = self.q_values[state][action]
+        q_value = self.q_values[(state, action)]
         s = reward + self.discount * self.getValue(nextState)
-        return (1 - self.alpha) * q_value + self.alpha * s
+        self.q_values[(state, action)] = (1 - self.alpha) * q_value + self.alpha * s
 
 
 
